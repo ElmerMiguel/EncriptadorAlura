@@ -1,9 +1,3 @@
-//e - enter
-//o - ober
-//i - imes
-//a - ai
-//u - ufat
-
 const encriptar = document.getElementById("button__encriptar");
 const desencriptar = document.getElementById("button__desencriptar");
 const copy = document.getElementById("button__copiar");
@@ -12,7 +6,7 @@ const textFinal = document.getElementById("textoFinal");
 const munheco = document.getElementById("munheco");
 const textInfo = document.getElementById("textoInfo");
 const rigth = document.getElementById("rigth")
-	
+
 const remplace = (newvalue) => {
 	textFinal.innerHTML = newvalue;
 	textFinal.classList.add("ajustar");
@@ -27,12 +21,12 @@ const remplace = (newvalue) => {
 
 const reset = () => {
 	textoInicial.value = "";
-    textoInicial.style.height = "auto";
+	textoInicial.style.height = "auto";
 	textFinal.innerHTML = "";
 	rigth.classList.remove("ajuste")
 	textFinal.classList.remove("ajustar");
 	munheco.classList.remove("ocultar");
-	textFinal.placeholder = "Ningún mensaje fue encontrado";
+	textFinal.placeholder = "Ningun mensaje fue encontrado";
 	textInfo.classList.remove("ocultar")
 	copy.classList.add("bn_ocultar");
 	textoInicial.focus();
@@ -46,52 +40,72 @@ let remplazar = [
 	["u", "ufat"]
 ];
 
+
+
+
+function validarTexto(texto) {
+	// Expresion regular que solo permite letras minusculas y espacios
+	const regex = /^[a-z\s]+$/;
+	return regex.test(texto);
+}
+
+
 encriptar.addEventListener('click', () => {
-
-	const texto = textoInicial.value.toLowerCase();
-
-	if (texto != "") {
-		function encript(newtext) {
-			for (let i = 0; i < remplazar.length; i++) {
-				if (newtext.includes(remplazar[i][0])) {
-					newtext = newtext.replaceAll(remplazar[i][0], remplazar[i][1]);
-				};
-			};
-			return newtext;
-		};
-		remplace(encript(texto));
+	const texto = textoInicial.value;
+	if (texto !== "") {
+		if (validarTexto(texto)) {
+			function encript(newtext) {
+				for (let i = 0; i < remplazar.length; i++) {
+					if (newtext.includes(remplazar[i][0])) {
+						newtext = newtext.replaceAll(remplazar[i][0], remplazar[i][1]);
+					}
+				}
+				return newtext;
+			}
+			remplace(encript(texto));
+		} else {
+			alert("Por favor, ingrese solo letras minusculas sin acentos ni caracteres especiales.");
+			reset();
+		}
 	} else {
 		alert("Ingrese texto para encriptar");
 		reset();
-	};
+	}
 });
 
 desencriptar.addEventListener('click', () => {
+	const texto = textoInicial.value;
 
-	const texto = textoInicial.value.toLowerCase();
-
-	if (texto != "") {
-		function desencript(newtext) {
-			for (let i = 0; i < remplazar.length; i++) {
-				if (newtext.includes(remplazar[i][1])) {
-					newtext = newtext.replaceAll(remplazar[i][1], remplazar[i][0]);
-				};
-			};
-			return newtext;
-		};
-		remplace(desencript(texto));
+	if (texto !== "") {
+		if (validarTexto(texto)) {
+			function desencript(newtext) {
+				for (let i = 0; i < remplazar.length; i++) {
+					if (newtext.includes(remplazar[i][1])) {
+						newtext = newtext.replaceAll(remplazar[i][1], remplazar[i][0]);
+					}
+				}
+				return newtext;
+			}
+			remplace(desencript(texto));
+		} else {
+			alert("Por favor, ingrese solo letras minusculas sin acentos ni caracteres especiales.");
+			reset();
+		}
 	} else {
 		alert("Ingrese texto a desencriptar");
 		reset();
-	};
+	}
 });
+
+
+
 
 copy.addEventListener("click", () => {
 	let texto = textFinal;
 	texto.select();
 	document.execCommand('copy');
 	//navigator.clipboard.writeText(texto.value);
-	//clipboard función no compatible con móviles
+	//clipboard funcion no compatible con moviles
 	alert("Texto Copiado");
 	reset();
 });
@@ -106,3 +120,9 @@ textoInicial.addEventListener("keyup", e => {
 	let scHeight = e.target.scrollHeight;
 	textoInicial.style.height = `${scHeight}px`;
 });
+
+//e - enter
+//o - ober
+//i - imes
+//a - ai
+//u - ufat
